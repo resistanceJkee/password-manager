@@ -16,13 +16,13 @@ function validatePhone() {
 }
 
 $(document).ready(() => {
-    $("#category").on("click", () => {
+    $("#category").on("focus", () => {
         $("#category").removeClass("red-outline")
     })
-    $("#login").on("click", () => {
+    $("#login").on("focus", () => {
         $("#login").removeClass("red-outline")
     })
-    $("#passwordInput").on("click", () => {
+    $("#passwordInput").on("focus", () => {
         $("#passwordInput").removeClass("red-outline")
     })
 })
