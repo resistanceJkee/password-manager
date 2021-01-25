@@ -82,8 +82,21 @@ function addPassword() {
             description
         },
         function (data) {
-            clearInputsAfterAdding()
-            getCategories()
+            let text = JSON.parse(data)
+            console.log(text.message)
+            if (text.message.indexOf("done") !== -1) {
+                $("#alertSuccessAdded").toggleClass("show")
+                setTimeout(() => {
+                    $("#alertSuccessAdded").toggleClass("show")
+                }, 5000)
+                clearInputsAfterAdding()
+                getCategories()
+            } else {
+                $("#alertDeclineAdded").toggleClass("show")
+                setTimeout(() => {
+                    $("#alertDeclineAdded").toggleClass("show")
+                }, 5000)
+            }
         }
     )
 }
@@ -109,14 +122,13 @@ function clearInputsAfterAdding() {
  */
 function getPasswords(category) {
     $("#categoryName").text(category)
-    $.post(
+    $.get(
         "/get_passwords",
         {
             category
         },
         function (data) {
             ALL_PASSWORDS = JSON.parse(data).message
-            console.log(ALL_PASSWORDS)
             displayPasswords(ALL_PASSWORDS)
         }
     )
@@ -137,7 +149,7 @@ function displayPasswords(passwords) {
     for (let i = 0; i < passwords.length; i++) {
         if (passwords[i].login.indexOf(text) !== -1) {
             root.append(`
-            <tr class="text-center">
+            <tr class="tr-appended text-center">
                 <th>${passwords[i].id}</th>
                 <td><div class="form-control" contenteditable="true">${passwords[i].login}</div></td>
                 <td><div class="form-control" contenteditable="true">${passwords[i].pass}</div></td>
@@ -179,7 +191,19 @@ function updatePassword(id, login, password, mail, phone, description) {
             description
         },
         success: function (data) {
-            console.log(JSON.parse(data))
+            let text = JSON.parse(data)
+            console.log(text.message)
+            if (text.message.indexOf("done") !== -1) {
+                $("#alertSuccessUpdated").toggleClass("show")
+                setTimeout(() => {
+                    $("#alertSuccessUpdated").toggleClass("show")
+                }, 5000)
+            } else {
+                $("#alertDeclineUpdated").toggleClass("show")
+                setTimeout(() => {
+                    $("#alertDeclineUpdated").toggleClass("show")
+                }, 5000)
+            }
         }
     })
 }
@@ -197,8 +221,20 @@ function deletePassword(id, element) {
         type: "DELETE",
         data: {id},
         success: function (data) {
-            console.log(JSON.parse(data))
-            deleteElement(element)
+            let text = JSON.parse(data)
+            console.log(text.message)
+            if (text.message.indexOf("done") !== -1) {
+                $("#alertSuccessDeleted").toggleClass("show")
+                setTimeout(() => {
+                    $("#alertSuccessDeleted").toggleClass("show")
+                }, 5000)
+                deleteElement(element)
+            } else {
+                $("#alertDeclineDeleted").toggleClass("show")
+                setTimeout(() => {
+                    $("#alertDeclineDeleted").toggleClass("show")
+                }, 5000)
+            }
         }
     })
 }
@@ -215,7 +251,22 @@ function deleteElement(element) {
         height: "0px",
         opacity: 0
     }, 500)
-    setTimeout(() => {$(element).remove()}, 700)
+    setTimeout(() => {
+        $(element).remove()
+    }, 700)
+}
+
+/**
+ * experimental
+ */
+function getSettings() {
+    $.getJSON(
+        "/get_settings",
+        {},
+        function (data) {
+            console.log(data)
+        }
+    )
 }
 
 $(document).ready(() => {
@@ -253,12 +304,12 @@ $(document).ready(() => {
             console.log("Родитель:", element)
             deletePassword(id, element)
         }
-    })
-    $("#passwordRoot").on("click", (e) => {
-        console.log(e.target.tagName)
-        if (e.target.tagName === "DIV") {
-            let rng = $(this).createRange()
-            console.log(rng)
+        if (e.target.tagName === "DIV" && e.target.contentEditable === 'true') {
+            document.execCommand("selectAll", false, null)
+            if ($("#autoCopy").is(":checked")) {
+                document.execCommand("copy")
+            }
         }
     })
+
 })
