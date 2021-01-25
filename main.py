@@ -17,7 +17,7 @@ def get_categories():
     return json.dumps({"message": categories})
 
 
-@app.route("/get_passwords", methods=["POST"])
+@app.route("/get_passwords", methods=["GET"])
 def get_passwords():
     category = request.values.get("category")
     passwords = search_passwords_by_category(category)
