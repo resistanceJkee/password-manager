@@ -18,8 +18,6 @@
 }
 
 .password-container {
-    /*border: 1px solid black;*/
-    /*border-radius: 5px;*/
     padding: 1.1rem;
 }
 
@@ -47,7 +45,7 @@
     transition: .5s;
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 0 5px 5px 0;
 }
 
 .menu-body-close {
@@ -64,72 +62,15 @@
     padding: 10px;
 }
 
-#btnMenu {
-    position: relative;
-    display: block;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-#btnMenu > * {
-    transition: .5s !important;
-}
-
-#btnMenu > div {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 2.1rem;
-    background: black;
-}
-
-#btnMenu > div:nth-child(1), #btnMenu > div:nth-child(2), #btnMenu > div:nth-child(3) {
-    left: 50%;
-}
-
-#btnMenu > div:nth-child(1) {
-    transform: rotate(-90deg);
-    top: -10px;
-}
-
-#btnMenu > div:nth-child(2) {
-    transform: rotate(-90deg);
-    top: 10px;
-}
-
-#btnMenu > div:nth-child(3) {
-    transform: rotate(90deg);
-    top: 0;
-}
-
-.first-div-rotate {
-    transform: rotate(45deg) !important;
-    top: 0 !important;
-}
-
-.second-div-rotate {
-    transform: rotate(-45deg) !important;
-    top: 0 !important;
-}
-
-.third-div-none {
-    display: none !important;
-}
-
-div[contenteditable=true] {
-    -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
-}
-
 .table {
     margin-bottom: 0;
 }
 
-.btn-outline-primary {
-    font-size: 1.5rem;
+#alertSuccessAdded, #alertDeclineAdded, #alertSuccessUpdated, #alertDeclineUpdated,
+#alertSuccessDeleted, #alertDeclineDeleted, #alertSuccessChanged {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 10000;
 }
