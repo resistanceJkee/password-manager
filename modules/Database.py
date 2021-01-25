@@ -27,9 +27,9 @@ def add_password_to_db(category, login, password, email=None, phone=None, descri
                   email=email,
                   phone=phone,
                   description=description).save()
-        return "Добавлена запись!"
+        return "done"
     else:
-        return "Такой пароль уже есть!"
+        return "decline"
 
 
 def update_password_bd(row_id, login=None, password=None, email=None, phone=None, description=None):
@@ -44,17 +44,17 @@ def update_password_bd(row_id, login=None, password=None, email=None, phone=None
             Passwords.update(phone=phone).where(Passwords.id == row_id).execute()
         if description:
             Passwords.update(description=description).where(Passwords.id == row_id).execute()
-        return "Успешно обновлено!"
+        return "done"
     except Exception as e:
-        return "Произошла ошибка при обновлении: {}".format(e)
+        return "decline"
 
 
 def delete_password_bd(row_id):
     try:
         Passwords.delete_by_id(row_id)
-        return "Успешно удалено!"
+        return "done"
     except Exception as e:
-        return "Произошла ошибка при удалении: {}".format(e)
+        return "decline"
 
 
 def search_password(category, login):
