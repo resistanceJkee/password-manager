@@ -89,7 +89,7 @@ function addPassword() {
 }
 
 /**
- *
+ * Функция очищает инпуты после добавления пароля
  */
 function clearInputsAfterAdding() {
     $("#login").val('')
@@ -99,6 +99,14 @@ function clearInputsAfterAdding() {
     $("#description").val('')
 }
 
+/**
+ * Получить категории
+ *
+ * Функция по полученной категории отправляет запрос на сервер, откуда получает данные о паролях, которые
+ * находятся в категории
+ *
+ * @param category - название категории
+ */
 function getPasswords(category) {
     $("#categoryName").text(category)
     $.post(
@@ -114,6 +122,14 @@ function getPasswords(category) {
     )
 }
 
+/**
+ * Отобразить пароли
+ *
+ * Функция отрисовывает пароли, путём добавления разметки в таблицу. Каждая строка - отдельный логин+пароль+
+ * +дополнительные данные.
+ *
+ * @param passwords - массив паролей
+ */
 function displayPasswords(passwords) {
     let root = $("#passwordRoot")
     root.empty()
@@ -138,6 +154,18 @@ function displayPasswords(passwords) {
     }
 }
 
+/**
+ * Обновить пароль
+ *
+ * Функция обновляет пароли через отправку запроса на сервер
+ *
+ * @param id - <td> №1 - id в таблице
+ * @param login - <td> №2 - логин в таблице
+ * @param password - <td> №3 - пароль в таблице
+ * @param mail - <td> №4 - почта в таблице
+ * @param phone - <td> №5 - телефон в таблице
+ * @param description - <td> №6 - примечание в таблице
+ */
 function updatePassword(id, login, password, mail, phone, description) {
     $.ajax({
         url: "/update_password",
@@ -156,6 +184,13 @@ function updatePassword(id, login, password, mail, phone, description) {
     })
 }
 
+/**
+ * Удалить пароль
+ *
+ * Функция удаляет пароль по id в таблице
+ * @param id - id в таблице
+ * @param element - строка в таблице (tr)
+ */
 function deletePassword(id, element) {
     $.ajax({
         url: "/delete_password",
@@ -168,6 +203,13 @@ function deletePassword(id, element) {
     })
 }
 
+/**
+ * Удалить элемент
+ *
+ * После удаления в базе данных, данная функция удаляет tr из таблицы
+ *
+ * @param element - строка в таблице (tr)
+ */
 function deleteElement(element) {
     $(element).animate({
         height: "0px",
