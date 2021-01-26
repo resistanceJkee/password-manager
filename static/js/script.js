@@ -13,7 +13,6 @@ function getCategories() {
         {},
         function (data) {
             ALL_CATEGORIES = data.message
-            console.log(ALL_CATEGORIES)
             displayCategories(ALL_CATEGORIES)
         }
     )
@@ -212,6 +211,7 @@ function updatePassword(id, login, password, mail, phone, description) {
  * Удалить пароль
  *
  * Функция удаляет пароль по id в таблице
+ *
  * @param id - id в таблице
  * @param element - строка в таблице (tr)
  */
@@ -292,9 +292,9 @@ $(document).ready(() => {
             let id = $(siblingsItems[0]).text()
             let login = $(siblingsItems[1]).children().text()
             let password = $(siblingsItems[2]).children().text()
-            let mail = $(siblingsItems[3]).children().text()
-            let phone = $(siblingsItems[4]).children().text()
-            let description = $(siblingsItems[5]).children().text()
+            let mail = $(siblingsItems[3]).children().text() === "null" ? null : $(siblingsItems[3]).children().text()
+            let phone = $(siblingsItems[4]).children().text() === "null" ? null : $(siblingsItems[4]).children().text()
+            let description = $(siblingsItems[5]).children().text() === "null" ? null : $(siblingsItems[5]).children().text()
             updatePassword(id, login, password, mail, phone, description)
         }
         if (e.target.tagName === 'BUTTON' && e.target.classList.contains("del")) {
