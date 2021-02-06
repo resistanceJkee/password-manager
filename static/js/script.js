@@ -260,6 +260,8 @@ function deleteElement(element) {
  * experimental
  */
 function getSettings() {
+    let copy = $("#autoCopy").val()
+    console.log(copy)
     $.getJSON(
         "/get_settings",
         {},
@@ -269,8 +271,13 @@ function getSettings() {
     )
 }
 
+function setSettings() {
+
+}
+
 $(document).ready(() => {
-    getCategories()
+    getSettings();
+    getCategories();
     $("#addPassBtn").on("click", () => {
         addPassword()
     })
@@ -311,5 +318,7 @@ $(document).ready(() => {
             }
         }
     })
+    $("#saveSettings").on("click", () => {
 
+    })
 })

@@ -46,6 +46,17 @@ def delete_password():
     return json.dumps({"message": message})
 
 
+@app.route("/get_settings", methods=["GET"])
+def get_settings():
+    with open("settings/settings.json", "r") as st:
+        return json.dumps(json.load(st))
+
+
+@app.route("/set_settings", methods=["POST"])
+def set_settings():
+    settings = request.values
+
+
 def main():
     webbrowser.open_new_tab("http://localhost:5000/")
     app.run()
