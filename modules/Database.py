@@ -1,8 +1,9 @@
 from peewee import *
 from modules.Protect import Protect
+import os
 
-
-db = SqliteDatabase("database.db")
+path_to_db = os.path.join(os.path.split(os.path.abspath(__file__))[0], "database.db") 
+db = SqliteDatabase(path_to_db)
 protect = Protect()
 
 
