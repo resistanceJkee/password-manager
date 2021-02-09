@@ -43,10 +43,3 @@ class Protect:
     @staticmethod
     def get_path_to_pm():
         return os.path.split(os.path.split(__file__)[0])[0]
-
-    def test(self):
-        print(self.key)
-        text = "Hello World!<>,.!!@#$%^&*()_-+=/"
-        print(text)
-        enc_text = self.encrypt(text)
-        dec_text = self.decrypt(enc_text)
