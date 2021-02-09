@@ -9,7 +9,7 @@ var ALL_PASSWORDS;
  */
 function getCategories() {
     $.getJSON(
-        "/get_categories",
+        "/categories",
         {},
         function (data) {
             ALL_CATEGORIES = data.message
@@ -71,7 +71,7 @@ function addPassword() {
         return
     }
     $.post(
-        "/add_password",
+        "/password",
         {
             category,
             login,
@@ -122,7 +122,7 @@ function clearInputsAfterAdding() {
 function getPasswords(category) {
     $("#categoryName").text(category)
     $.get(
-        "/get_passwords",
+        "/password",
         {
             category
         },
@@ -179,7 +179,7 @@ function displayPasswords(passwords) {
  */
 function updatePassword(id, login, password, mail, phone, description) {
     $.ajax({
-        url: "/update_password",
+        url: "/password",
         type: "PUT",
         data: {
             id,
@@ -217,7 +217,7 @@ function updatePassword(id, login, password, mail, phone, description) {
  */
 function deletePassword(id, element) {
     $.ajax({
-        url: "/delete_password",
+        url: "/password",
         type: "DELETE",
         data: {id},
         success: function (data) {
@@ -257,22 +257,37 @@ function deleteElement(element) {
 }
 
 /**
- * experimental
+ * Устанавливает настройки во вкладке настроек (модалке)
+ * 
+ * Лучше пользоваться prop, потому что он вернёт булевое значение (дальше удобнее с ним работать вроде как)
  */
 function getSettings() {
-    let copy = $("#autoCopy").val()
-    console.log(copy)
+    let copy = $("#autoCopy").prop("checked");
     $.getJSON(
-        "/get_settings",
+        "/settings",
         {},
         function (data) {
-            console.log(data)
+            setSettings(data);
         }
     )
 }
 
-function setSettings() {
+function setSettings(data) {
+    $("#autoCopy").prop("checked", data.autoCopy === "true");
+}
 
+function saveSettings() {
+    let autoCopy = $("#autoCopy").prop("checked") === true;
+    $.ajax({
+        type: "PUT",
+        url: "/settings",
+        data: {
+            autoCopy: autoCopy
+        },
+        success: function () {
+            getSettings()
+        }
+    });
 }
 
 $(document).ready(() => {
@@ -318,7 +333,7 @@ $(document).ready(() => {
             }
         }
     })
-    $("#saveSettings").on("click", () => {
-
+    $("#saveSettings").on("click", (e) => {
+        saveSettings();
     })
 })
