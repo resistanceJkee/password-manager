@@ -1,4 +1,6 @@
+from gevent.pywsgi import WSGIServer
 from flask import *
+from threading import Thread
 from modules.Database import *
 import webbrowser
 import os
@@ -56,18 +58,30 @@ def get_settings():
 
 @app.route("/settings", methods=["PUT"])
 def set_settings():
-    settings = request.values.get("autoCopy")
+    auto_copy = request.values.get("autoCopy")
+    focus_to_new = request.values.get("focusToNew")
     with open(settings_path, "r") as file:
         data = json.load(file)
-        data["autoCopy"] = settings
+        data["autoCopy"] = auto_copy
+        data["focusToNew"] = focus_to_new
     with open(settings_path, "w") as file:
         file.write(json.dumps(data))
     return json.dumps({"message": "good"})
 
 
-def main():
-    webbrowser.open_new_tab("http://localhost:5000/")
+def st_sv():
     app.run()
+
+
+def open_browser():
+    webbrowser.open_new_tab("http://localhost:5000/")
+
+
+def main():
+    srv = Thread(target=st_sv)
+    ob = Thread(target=open_browser)
+    srv.start()
+    ob.start()
 
 
 if __name__ == '__main__':
