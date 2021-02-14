@@ -13,7 +13,7 @@ function getCategories() {
         {},
         function (data) {
             ALL_CATEGORIES = data.message
-            displayCategories(ALL_CATEGORIES)
+            displayCategories()
         }
     )
 }
@@ -25,15 +25,14 @@ function getCategories() {
  *
  * @param categories - массив имён
  */
-function displayCategories(categories) {
+function displayCategories() {
     let root = $("#categoriesRoot")
     root.empty()
     let text = $("#categories").val()
-    for (let i = 0; i < categories.length; i++) {
-        if (categories[i].indexOf(text) !== -1) {
-            root.append(`<button type="button" class="btn btn-outline-primary m-3">${categories[i]}</button>`)
+    for (let i = 0; i < ALL_CATEGORIES.length; i++) {
+        if (ALL_CATEGORIES[i].indexOf(text) !== -1) {
+            root.append(`<button type="button" class="btn btn-outline-primary m-3">${ALL_CATEGORIES[i]}</button>`)
         }
-        // root.append(`<button type="button" class="btn btn-outline-primary m-3">${categories[i]}</button>`)
     }
 }
 
@@ -82,14 +81,19 @@ function addPassword() {
         },
         function (data) {
             let text = JSON.parse(data)
-            console.log(text.message)
             if (text.message.indexOf("done") !== -1) {
                 $("#alertSuccessAdded").toggleClass("show")
                 setTimeout(() => {
                     $("#alertSuccessAdded").toggleClass("show")
-                }, 5000)
-                clearInputsAfterAdding()
-                getCategories()
+                }, 5000);
+                clearInputsAfterAdding();
+                getCategories();
+                if ($("#categoryName").text().toLowerCase() === category.toLowerCase()) {
+                    getPasswords(category);
+                }
+                if ($("#focusToNew").is(":checked") && $("#categoryName").text().toLowerCase() !== category.toLowerCase()) {
+                    getPasswords(category);
+                }
             } else {
                 $("#alertDeclineAdded").toggleClass("show")
                 setTimeout(() => {
@@ -112,7 +116,7 @@ function clearInputsAfterAdding() {
 }
 
 /**
- * Получить категории
+ * Получить пароли
  *
  * Функция по полученной категории отправляет запрос на сервер, откуда получает данные о паролях, которые
  * находятся в категории
@@ -128,7 +132,7 @@ function getPasswords(category) {
         },
         function (data) {
             ALL_PASSWORDS = JSON.parse(data).message
-            displayPasswords(ALL_PASSWORDS)
+            displayPasswords()
         }
     )
 }
@@ -141,20 +145,21 @@ function getPasswords(category) {
  *
  * @param passwords - массив паролей
  */
-function displayPasswords(passwords) {
-    let root = $("#passwordRoot")
-    root.empty()
-    let text = $("#searchPassInTable").val()
-    for (let i = 0; i < passwords.length; i++) {
-        if (passwords[i].login.indexOf(text) !== -1) {
+function displayPasswords() {
+    let root = $("#passwordRoot");
+    root.empty();
+    let text = $("#searchPassInTable").val().toLowerCase();
+    for (let i = 0; i < ALL_PASSWORDS.length; i++) {
+        let lowerLogin = ALL_PASSWORDS[i].login.toLowerCase();
+        if (lowerLogin.indexOf(text) !== -1) {
             root.append(`
             <tr class="tr-appended text-center">
-                <th>${passwords[i].id}</th>
-                <td><div class="form-control" contenteditable="true">${passwords[i].login}</div></td>
-                <td><div class="form-control" contenteditable="true">${passwords[i].pass}</div></td>
-                <td><div class="form-control" contenteditable="true">${passwords[i].email}</div></td>
-                <td><div class="form-control" contenteditable="true">${passwords[i].phone}</div></td>
-                <td><div class="form-control" contenteditable="true">${passwords[i].description}</div></td>
+                <th>${ALL_PASSWORDS[i].id}</th>
+                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].login}</div></td>
+                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].pass}</div></td>
+                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].email}</div></td>
+                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].phone}</div></td>
+                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].description}</div></td>
                 <td class="d-flex flex-row align-items-center justify-content-center">
                     <button class="upd btn btn-primary me-1">&uparrow;</button>
                     <button class="del btn btn-primary btn-close me-1"></button>
@@ -258,11 +263,8 @@ function deleteElement(element) {
 
 /**
  * Устанавливает настройки во вкладке настроек (модалке)
- * 
- * Лучше пользоваться prop, потому что он вернёт булевое значение (дальше удобнее с ним работать вроде как)
  */
 function getSettings() {
-    let copy = $("#autoCopy").prop("checked");
     $.getJSON(
         "/settings",
         {},
@@ -272,17 +274,28 @@ function getSettings() {
     )
 }
 
+/**
+ * Ставит чекбоксы в нужное состояние в графе настроек.
+ * 
+ * @param data - объект с настройками
+ */
 function setSettings(data) {
     $("#autoCopy").prop("checked", data.autoCopy === "true");
+    $("#focusToNew").prop("checked", data.focusToNew === "true");
 }
 
+/**
+ * Функция берёт текущее состояние чекбоксов и отправляет их на сервер
+ */
 function saveSettings() {
     let autoCopy = $("#autoCopy").prop("checked") === true;
+    let focusToNew = $("#focusToNew").prop("checked") === true;
     $.ajax({
         type: "PUT",
         url: "/settings",
         data: {
-            autoCopy: autoCopy
+            autoCopy: autoCopy,
+            focusToNew: focusToNew
         },
         success: function () {
             getSettings()
@@ -299,13 +312,15 @@ $(document).ready(() => {
     $("#categoriesRoot").on("click", (e) => {
         if (e.target.tagName === 'BUTTON') {
             getPasswords($(e.target).text())
+            $("#categories").val('');
+            displayCategories();
         }
     })
     $("#searchPassInTable").keyup(() => {
-        displayPasswords(ALL_PASSWORDS)
+        displayPasswords();
     })
     $("#categories").keyup(() => {
-        displayCategories(ALL_CATEGORIES)
+        displayCategories()
     })
     $("#passwordRoot").on("click", (e) => {
         if (e.target.tagName === 'BUTTON' && e.target.classList.contains("upd")) {
@@ -323,7 +338,6 @@ $(document).ready(() => {
             let th = $(e.target).parent().siblings()[0]
             let id = $(th).text()
             let element = $(th).parent()
-            console.log("Родитель:", element)
             deletePassword(id, element)
         }
         if (e.target.tagName === "DIV" && e.target.contentEditable === 'true') {
