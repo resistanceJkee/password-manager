@@ -1,5 +1,6 @@
 var ALL_CATEGORIES;
 var ALL_PASSWORDS;
+var flagFirstTimeLoad = true;
 
 /**
  * Получить категории из базы данных
@@ -12,8 +13,8 @@ function getCategories() {
         "/categories",
         {},
         function (data) {
-            ALL_CATEGORIES = data.message
-            displayCategories()
+            ALL_CATEGORIES = data.message;
+            displayCategories();
         }
     )
 }
@@ -22,16 +23,37 @@ function getCategories() {
  * Отобразить категории
  *
  * Функция отрисовывает категории, которые были получены в getCategories
- *
- * @param categories - массив имён
  */
 function displayCategories() {
-    let root = $("#categoriesRoot")
-    root.empty()
-    let text = $("#categories").val()
+    let root = $("#categoriesRoot");
+    root.empty();
+    let text = $("#categories").val();
     for (let i = 0; i < ALL_CATEGORIES.length; i++) {
         if (ALL_CATEGORIES[i].indexOf(text) !== -1) {
-            root.append(`<button type="button" class="btn btn-outline-primary m-3">${ALL_CATEGORIES[i]}</button>`)
+            root.append(`<button type="button" class="btn btn-outline-primary m-3">${ALL_CATEGORIES[i]}</button>`);
+        }
+    }
+    if (ALL_CATEGORIES.length === 0) {
+        $("#passwordRoot").append(`
+            <h2>Добавьте пароль!</h2>
+        `);
+        return;
+    } else {
+        if (flagFirstTimeLoad) {
+            flagFirstTimeLoad = false;
+            let category = $("#openFirstCategory").val();
+            if (ALL_CATEGORIES.indexOf(category) !== -1) {
+                getPasswords(category);
+            } else {
+                if (category === "") {
+                    getPasswords(ALL_CATEGORIES[0]);
+                    return;
+                }
+                $("#alertErrorLoadCategory").toggleClass("show");
+                setTimeout(function () {
+                    $("#alertErrorLoadCategory").toggleClass("show");
+                }, 5000);
+            }
         }
     }
 }
@@ -44,30 +66,30 @@ function displayCategories() {
  */
 function addPassword() {
     /***********************************************/
-    let selectCategory = $("#category")
-    let selectLogin = $("#login")
-    let selectPassword = $("#passwordInput")
-    let selectMail = $("#mail")
-    let selectPhone = $("#phone")
-    let selectDescription = $("#description")
+    let selectCategory = $("#category");
+    let selectLogin = $("#login");
+    let selectPassword = $("#passwordInput");
+    let selectMail = $("#mail");
+    let selectPhone = $("#phone");
+    let selectDescription = $("#description");
     /***********************************************/
-    let category = selectCategory.val().toLowerCase()
-    let login = selectLogin.val()
-    let password = selectPassword.val()
-    let mail = selectMail.val()
-    let phone = selectPhone.val()
-    let description = selectDescription.val()
+    let category = selectCategory.val().toLowerCase();
+    let login = selectLogin.val();
+    let password = selectPassword.val();
+    let mail = selectMail.val();
+    let phone = selectPhone.val();
+    let description = selectDescription.val();
     if (category === '') {
-        selectCategory.addClass("red-outline")
-        return
+        selectCategory.addClass("red-outline");
+        return;
     }
     if (login === '') {
-        selectLogin.addClass("red-outline")
-        return
+        selectLogin.addClass("red-outline");
+        return;
     }
     if (password === '') {
-        selectPassword.addClass("red-outline")
-        return
+        selectPassword.addClass("red-outline");
+        return;
     }
     $.post(
         "/password",
@@ -80,9 +102,9 @@ function addPassword() {
             description
         },
         function (data) {
-            let text = JSON.parse(data)
+            let text = JSON.parse(data);
             if (text.message.indexOf("done") !== -1) {
-                $("#alertSuccessAdded").toggleClass("show")
+                $("#alertSuccessAdded").toggleClass("show");
                 setTimeout(() => {
                     $("#alertSuccessAdded").toggleClass("show")
                 }, 5000);
@@ -95,10 +117,10 @@ function addPassword() {
                     getPasswords(category);
                 }
             } else {
-                $("#alertDeclineAdded").toggleClass("show")
+                $("#alertDeclineAdded").toggleClass("show");
                 setTimeout(() => {
                     $("#alertDeclineAdded").toggleClass("show")
-                }, 5000)
+                }, 5000);
             }
         }
     )
@@ -142,8 +164,6 @@ function getPasswords(category) {
  *
  * Функция отрисовывает пароли, путём добавления разметки в таблицу. Каждая строка - отдельный логин+пароль+
  * +дополнительные данные.
- *
- * @param passwords - массив паролей
  */
 function displayPasswords() {
     let root = $("#passwordRoot");
@@ -153,18 +173,18 @@ function displayPasswords() {
         let lowerLogin = ALL_PASSWORDS[i].login.toLowerCase();
         if (lowerLogin.indexOf(text) !== -1) {
             root.append(`
-            <tr class="tr-appended text-center">
-                <th>${ALL_PASSWORDS[i].id}</th>
-                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].login}</div></td>
-                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].pass}</div></td>
-                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].email}</div></td>
-                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].phone}</div></td>
-                <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].description}</div></td>
-                <td class="d-flex flex-row align-items-center justify-content-center">
-                    <button class="upd btn btn-primary me-1">&uparrow;</button>
-                    <button class="del btn btn-primary btn-close me-1"></button>
-                </td>
-            </tr>
+                <tr class="tr-appended text-center">
+                    <th>${ALL_PASSWORDS[i].id}</th>
+                    <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].login}</div></td>
+                    <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].pass}</div></td>
+                    <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].email === null ? "" : ALL_PASSWORDS[i].email}</div></td>
+                    <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].phone === null ? "" : ALL_PASSWORDS[i].phone}</div></td>
+                    <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].description === null ? "" : ALL_PASSWORDS[i].description}</div></td>
+                    <td class="d-flex flex-row align-items-center justify-content-center">
+                        <button class="upd btn btn-primary me-1">&uparrow;</button>
+                        <button class="del btn btn-primary btn-close me-1"></button>
+                    </td>
+                </tr>
             `)
         }
     }
@@ -282,6 +302,8 @@ function getSettings() {
 function setSettings(data) {
     $("#autoCopy").prop("checked", data.autoCopy === "true");
     $("#focusToNew").prop("checked", data.focusToNew === "true");
+    console.log(data.openThisCategory);
+    $("#openFirstCategory").val(data.openThisCategory);
 }
 
 /**
@@ -290,15 +312,17 @@ function setSettings(data) {
 function saveSettings() {
     let autoCopy = $("#autoCopy").prop("checked") === true;
     let focusToNew = $("#focusToNew").prop("checked") === true;
+    let openThisCategory = $("#openFirstCategory").val().toLowerCase();
     $.ajax({
         type: "PUT",
         url: "/settings",
         data: {
             autoCopy: autoCopy,
-            focusToNew: focusToNew
+            focusToNew: focusToNew,
+            openThisCategory: openThisCategory
         },
         success: function () {
-            getSettings()
+            getSettings();
         }
     });
 }
@@ -306,12 +330,16 @@ function saveSettings() {
 $(document).ready(() => {
     getSettings();
     getCategories();
+    $("#btnMenu").on("click", () => {
+        $("#btnMenu").toggleClass("btn-outline-primary").toggleClass("btn-primary")
+        $("#menu-body").toggleClass("open").toggleClass("menu-body-close")
+    })
     $("#addPassBtn").on("click", () => {
-        addPassword()
+        addPassword();
     })
     $("#categoriesRoot").on("click", (e) => {
         if (e.target.tagName === 'BUTTON') {
-            getPasswords($(e.target).text())
+            getPasswords($(e.target).text());
             $("#categories").val('');
             displayCategories();
         }
@@ -320,30 +348,30 @@ $(document).ready(() => {
         displayPasswords();
     })
     $("#categories").keyup(() => {
-        displayCategories()
+        displayCategories();
     })
     $("#passwordRoot").on("click", (e) => {
         if (e.target.tagName === 'BUTTON' && e.target.classList.contains("upd")) {
-            let tdParent = $(e.target).parent()
-            let siblingsItems = $(tdParent).siblings()
-            let id = $(siblingsItems[0]).text()
-            let login = $(siblingsItems[1]).children().text()
-            let password = $(siblingsItems[2]).children().text()
-            let mail = $(siblingsItems[3]).children().text() === "null" ? null : $(siblingsItems[3]).children().text()
-            let phone = $(siblingsItems[4]).children().text() === "null" ? null : $(siblingsItems[4]).children().text()
-            let description = $(siblingsItems[5]).children().text() === "null" ? null : $(siblingsItems[5]).children().text()
-            updatePassword(id, login, password, mail, phone, description)
+            let tdParent = $(e.target).parent();
+            let siblingsItems = $(tdParent).siblings();
+            let id = $(siblingsItems[0]).text();
+            let login = $(siblingsItems[1]).children().text();
+            let password = $(siblingsItems[2]).children().text();
+            let mail = $(siblingsItems[3]).children().text() === "null" ? null : $(siblingsItems[3]).children().text();
+            let phone = $(siblingsItems[4]).children().text() === "null" ? null : $(siblingsItems[4]).children().text();
+            let description = $(siblingsItems[5]).children().text() === "null" ? null : $(siblingsItems[5]).children().text();
+            updatePassword(id, login, password, mail, phone, description);
         }
         if (e.target.tagName === 'BUTTON' && e.target.classList.contains("del")) {
-            let th = $(e.target).parent().siblings()[0]
-            let id = $(th).text()
-            let element = $(th).parent()
-            deletePassword(id, element)
+            let th = $(e.target).parent().siblings()[0];
+            let id = $(th).text();
+            let element = $(th).parent();
+            deletePassword(id, element);
         }
         if (e.target.tagName === "DIV" && e.target.contentEditable === 'true') {
-            document.execCommand("selectAll", false, null)
+            document.execCommand("selectAll", false, null);
             if ($("#autoCopy").is(":checked")) {
-                document.execCommand("copy")
+                document.execCommand("copy");
             }
         }
     })
