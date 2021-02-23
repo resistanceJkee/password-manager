@@ -1,4 +1,3 @@
-from gevent.pywsgi import WSGIServer
 from flask import *
 from threading import Thread
 from modules.Database import *
@@ -60,10 +59,12 @@ def get_settings():
 def set_settings():
     auto_copy = request.values.get("autoCopy")
     focus_to_new = request.values.get("focusToNew")
+    open_this_category = request.values.get("openThisCategory")
     with open(settings_path, "r") as file:
         data = json.load(file)
         data["autoCopy"] = auto_copy
         data["focusToNew"] = focus_to_new
+        data["openThisCategory"] = open_this_category
     with open(settings_path, "w") as file:
         file.write(json.dumps(data))
     return json.dumps({"message": "good"})
