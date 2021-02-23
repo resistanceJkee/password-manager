@@ -13,10 +13,6 @@
     transition: .5s;
 }
 
-.red-outline {
-    border: 1px solid red;
-}
-
 .password-container {
     padding: 1.1rem;
 }
@@ -67,7 +63,7 @@
 }
 
 #alertSuccessAdded, #alertDeclineAdded, #alertSuccessUpdated, #alertDeclineUpdated,
-#alertSuccessDeleted, #alertDeclineDeleted, #alertSuccessChanged {
+#alertSuccessDeleted, #alertDeclineDeleted, #alertSuccessChanged, #alertErrorLoadCategory {
     position: fixed;
     top: 1rem;
     left: 50%;
