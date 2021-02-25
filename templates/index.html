@@ -114,13 +114,17 @@
                 <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex flex-row">
+                <div class="form-check form-switch d-flex flex-row">
                     <input class="form-check-input" id="autoCopy" type="checkbox">
                     <label class="form-check-label ms-3" for="autoCopy">Автоматически копировать пароль в буфер</label>
                 </div>
-                <div class="d-flex flex-row">
+                <div class="form-check form-switch d-flex flex-row">
                     <input class="form-check-input" id="focusToNew" type="checkbox">
                     <label class="form-check-label ms-3" for="focusToNew">Переключаться на только что добавленный пароль</label>
+                </div>
+                <div class="input-group mt-2">
+                    <span class="input-group-text" id="spanForOF">Открывать категорию</span>
+                    <input class="form-control" id="openFirstCategory" type="text" aria-describedby="spanForOF" placeholder="может быть пустой...">
                 </div>
                 <hr>
                 <div class="d-flex flex-row align-items-center p-2">
