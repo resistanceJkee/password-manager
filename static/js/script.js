@@ -181,8 +181,8 @@ function displayPasswords() {
                     <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].phone === null ? "" : ALL_PASSWORDS[i].phone}</div></td>
                     <td><div class="form-control" contenteditable="true">${ALL_PASSWORDS[i].description === null ? "" : ALL_PASSWORDS[i].description}</div></td>
                     <td class="d-flex flex-row align-items-center justify-content-center">
-                        <button class="upd btn btn-primary me-1">&uparrow;</button>
-                        <button class="del btn btn-primary btn-close me-1"></button>
+                        <button class="upd btn btn-outline-primary me-1">&uparrow;</button>
+                        <button class="del btn btn-outline-primary btn-close me-1"></button>
                     </td>
                 </tr>
             `)
@@ -331,8 +331,9 @@ $(document).ready(() => {
     getSettings();
     getCategories();
     $("#btnMenu").on("click", () => {
-        $("#btnMenu").toggleClass("btn-outline-primary").toggleClass("btn-primary")
-        $("#menu-body").toggleClass("open").toggleClass("menu-body-close")
+        $("#btnMenu").toggleClass("btn-outline-primary").toggleClass("btn-primary");
+        $("#menu-body").toggleClass("open").toggleClass("menu-body-close");
+        $("#categories").focus();
     })
     $("#addPassBtn").on("click", () => {
         addPassword();
@@ -342,6 +343,7 @@ $(document).ready(() => {
             getPasswords($(e.target).text());
             $("#categories").val('');
             displayCategories();
+            $("#searchPassInTable").focus();
         }
     })
     $("#searchPassInTable").keyup(() => {
@@ -374,8 +376,11 @@ $(document).ready(() => {
                 document.execCommand("copy");
             }
         }
-    })
+    });
     $("#saveSettings").on("click", (e) => {
         saveSettings();
-    })
+    });
+    $("#importDBBtn").on("change", () => {
+        console.log(this.files);
+    });
 })

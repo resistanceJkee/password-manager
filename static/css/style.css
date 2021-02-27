@@ -34,7 +34,8 @@
 }
 
 #menu-body {
-    max-width: 350px !important;
+    min-width: 300px;
+    width: 300px;
     z-index: 15;
     background: white;
     padding: 15px;
@@ -42,16 +43,22 @@
     border-right: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
     border-radius: 0 5px 5px 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#tablePasswords {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .menu-body-close {
-    display: none !important;
-    opacity: 0 !important;
+    margin-left: -300px;
 }
 
 .open {
-    display: flex !important;
-    opacity: 1 !important;
+    margin-left: 0;
 }
 
 .menu-btn {

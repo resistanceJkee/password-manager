@@ -13,8 +13,8 @@
 <body>
 
 <!--Навигационная панель-->
-<div class="container-fluid d-flex flex-row justify-content-start align-items-center bg-light w-100 p-1">
-    <button id="btnMenu" class="btn btn-outline-primary m-2">Меню</button>
+<div id="navId" class="container-fluid d-flex flex-row justify-content-start align-items-center bg-light w-100 p-1">
+    <button id="btnMenu" class="btn btn-outline-primary m-2">Категории</button>
     <button id="btnAddPass" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#addPasswords">Добавить</button>
     <button id="btnSettings" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#modalSettings">Настройки</button>
 </div>
@@ -70,27 +70,27 @@
             </div>
             <div class="modal-body">
                 <form method="post">
-                    <div class="container text-center mt-3 mb-3">
+                    <div class="container mt-3 mb-3">
                         <label for="category" class="mb-3">Название категории</label>
                         <input type="text" class="form-control" id="category">
                     </div>
-                    <div class="container text-center mt-3 mb-3">
+                    <div class="container mt-3 mb-3">
                         <label for="login" class="mb-3">Логин</label>
                         <input type="text" class="form-control" id="login">
                     </div>
-                    <div class="container text-center mt-3 mb-3">
+                    <div class="container mt-3 mb-3">
                         <label for="passwordInput" class="mb-3">Пароль</label>
                         <input type="password" class="form-control" id="passwordInput">
                     </div>
-                    <div class="container text-center mt-3 mb-3">
+                    <div class="container mt-3 mb-3">
                         <label for="mail" class="mb-3">Mail</label>
                         <input type="text" class="form-control" id="mail">
                     </div>
-                    <div class="container text-center mt-3 mb-3">
+                    <div class="container mt-3 mb-3">
                         <label for="phone" class="mb-3">Телефон</label>
                         <input type="text" class="form-control" id="phone">
                     </div>
-                    <div class="container text-center mt-3 mb-3">
+                    <div class="container mt-3 mb-3">
                         <label for="description" class="mb-3">Доп. информация</label>
                         <input type="text" class="form-control" id="description">
                     </div>
@@ -116,7 +116,7 @@
             <div class="modal-body">
                 <div class="form-check form-switch d-flex flex-row">
                     <input class="form-check-input" id="autoCopy" type="checkbox">
-                    <label class="form-check-label ms-3" for="autoCopy">Автоматически копировать пароль в буфер</label>
+                    <label class="form-check-label ms-3" for="autoCopy">Автоматически копировать в буфер</label>
                 </div>
                 <div class="form-check form-switch d-flex flex-row">
                     <input class="form-check-input" id="focusToNew" type="checkbox">
@@ -137,7 +137,7 @@
                 </div>
                 <hr>
                 <div class="d-flex flex-row align-items-center p-2">
-                    <input class="form-control w-auto" id="importDB" type="file" webkitdirectory directory>
+                    <input class="form-control w-auto" id="importDB" type="file">
                     <button id="importDBBtn" class="btn btn-outline-primary ms-3">Импортировать БД</button>
                 </div>
                 <div class="d-flex flex-row align-items-center p-2">
@@ -180,7 +180,7 @@
 
 <script src="../static/js/jquery.js"></script>
 <script src="../static/js/script.js"></script>
-<script src="../static/js/animation.js"></script>
 <script src="../static/js/validator.js"></script>
+<script src="../static/js/adapt.js"></script>
 </body>
 </html>
