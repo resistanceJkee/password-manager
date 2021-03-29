@@ -2,7 +2,7 @@ from peewee import *
 from modules.Protect import Protect
 import os
 
-path_to_db = os.path.join(os.path.split(os.path.abspath(__file__))[0], "database.db") 
+path_to_db = os.path.join(os.path.split(os.path.dirname(__file__))[0], f"database{os.sep}database.db")
 db = SqliteDatabase(path_to_db)
 protect = Protect()
 
@@ -21,16 +21,13 @@ class Passwords(Model):
 
 
 def add_password_to_db(category, login, password, email=None, phone=None, description=None):
-    if not search_password(category, login):
-        Passwords(category=category,
-                  login=login,
-                  password=protect.encrypt(password),
-                  email=email,
-                  phone=phone,
-                  description=description).save()
-        return "done"
-    else:
-        return "decline"
+    Passwords(category=category,
+              login=login,
+              password=protect.encrypt(password),
+              email=email,
+              phone=phone,
+              description=description).save()
+    return "done"
 
 
 def update_password_bd(row_id, login=None, password=None, email=None, phone=None, description=None):
