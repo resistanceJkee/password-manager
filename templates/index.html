@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="../static/img/favicon.ico">
     <link rel="stylesheet" href="../static/css/bootstrap.css">
     <link rel="stylesheet" href="../static/css/style.css">
-    <title>PasswordManager</title>
+    <title>Монокль</title>
 </head>
 <body>
 
@@ -41,7 +41,8 @@
             <label class="h4" for="searchPassInTable">Поиск пароля</label>
             <input class="form-control text-center w-50" id="searchPassInTable" type="text" placeholder="Введите логин...">
         </div>
-        <table class="table table-bordered table-hover">
+        <div class="container-fluid">
+            <table class="table table-bordered table-hover">
             <thead class="">
             <tr class="text-center">
                 <th>id</th>
@@ -55,6 +56,7 @@
             </thead>
             <tbody class="" id="passwordRoot"></tbody>
         </table>
+        </div>
     </div>
     <!---->
 </div>
@@ -80,7 +82,11 @@
                     </div>
                     <div class="container mt-3 mb-3">
                         <label for="passwordInput" class="mb-3">Пароль</label>
-                        <input type="password" class="form-control" id="passwordInput">
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="passwordInput">
+                            <input type="button" class="btn btn-success" value="eye" id="eye">
+                            <input type="button" class="btn btn-primary" value="рандом" id="randPass">
+                        </div>
                     </div>
                     <div class="container mt-3 mb-3">
                         <label for="mail" class="mb-3">Mail</label>
@@ -127,22 +133,15 @@
                     <input class="form-control" id="openFirstCategory" type="text" aria-describedby="spanForOF" placeholder="может быть пустой...">
                 </div>
                 <hr>
-                <div class="d-flex flex-row align-items-center p-2">
-                    <input class="form-control w-auto" id="importKey" type="file">
-                    <button id="importKeyBtn" class="btn btn-outline-primary ms-3">Импортировать ключ</button>
-                </div>
-                <div class="d-flex flex-row align-items-center p-2">
-                    <input class="form-control w-auto" id="exportKey" type="file" webkitdirectory directory>
-                    <button id="exportKeyBtn" class="btn btn-outline-primary ms-3">Экспортировать ключ</button>
-                </div>
-                <hr>
-                <div class="d-flex flex-row align-items-center p-2">
-                    <input class="form-control w-auto" id="importDB" type="file">
-                    <button id="importDBBtn" class="btn btn-outline-primary ms-3">Импортировать БД</button>
-                </div>
-                <div class="d-flex flex-row align-items-center p-2">
-                    <input class="form-control w-auto" id="exportDB" type="file" webkitdirectory directory>
-                    <button id="exportDBBtn" class="btn btn-outline-primary ms-3">Экспортировать БД</button>
+                <div class="container">
+                    <div class="row row-cols-4 gap-2">
+                        <button id="importKeyBtn" class="btn btn-outline-primary ms-3">Импортировать ключ</button>
+                        <button id="importDBBtn" class="btn btn-outline-primary ms-3">Импортировать БД</button>
+                        <button id="importAllButton" class="btn btn-outline-primary ms-3">Импортировать всё</button>
+                        <button id="exportKeyBtn" class="btn btn-outline-primary ms-3">Экспортировать ключ</button>
+                        <button id="exportDBBtn" class="btn btn-outline-primary ms-3">Экспортировать БД</button>
+                        <button id="exportAllButton" class="btn btn-outline-primary ms-3">Экспортировать всё</button>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -180,7 +179,6 @@
 
 <script src="../static/js/jquery.js"></script>
 <script src="../static/js/script.js"></script>
-<script src="../static/js/validator.js"></script>
 <script src="../static/js/adapt.js"></script>
 </body>
 </html>
