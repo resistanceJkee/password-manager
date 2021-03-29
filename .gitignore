@@ -4,3 +4,5 @@ prototype/*
 .idea/
 .diea/*
 database.db
+database/*
+database
