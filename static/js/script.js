@@ -302,8 +302,10 @@ function getSettings() {
 function setSettings(data) {
     $("#autoCopy").prop("checked", data.autoCopy === "true");
     $("#focusToNew").prop("checked", data.focusToNew === "true");
-    console.log(data.openThisCategory);
     $("#openFirstCategory").val(data.openThisCategory);
+    if (flagFirstTimeLoad) {
+        getCategories();
+    }
 }
 
 /**
@@ -327,9 +329,24 @@ function saveSettings() {
     });
 }
 
+function importKey() {
+    $.ajax(
+        "/import_key",
+        {}
+    )
+}
+
+function randomPass() {
+    let randomSymbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!№;%:?*()_+=";
+    let password = "";
+    for (let i = 0; i < 16; i++) {
+        password += randomSymbols.charAt(Math.floor(Math.random() * randomSymbols.length));
+    }
+    $("#passwordInput").val(password);
+}
+
 $(document).ready(() => {
     getSettings();
-    getCategories();
     $("#btnMenu").on("click", () => {
         $("#btnMenu").toggleClass("btn-outline-primary").toggleClass("btn-primary");
         $("#menu-body").toggleClass("open").toggleClass("menu-body-close");
@@ -380,7 +397,54 @@ $(document).ready(() => {
     $("#saveSettings").on("click", (e) => {
         saveSettings();
     });
-    $("#importDBBtn").on("change", () => {
-        console.log(this.files);
-    });
+    $("#importKeyBtn").on("click", () => {
+        $.ajax (
+            "/import_key",
+            {},
+            (message) => {
+                console.log("Good!")
+            }
+        )
+    })
+    $("#exportKeyBtn").on("click", () => {
+        $.ajax(
+            "/export_key",
+            {}
+        )
+    })
+    $("#importDBBtn").on("click", () => {
+        $.ajax(
+            "/import_db",
+            {}
+        )
+    })
+    $("#exportDBBtn").on("click", () => {
+        $.ajax(
+            "/export_db",
+            {}
+        )
+    })
+    $("#importAllButton").on("click", () => {
+        $.ajax(
+            "/import_all",
+            {}
+        )
+    })
+    $("#exportAllButton").on("click", () => {
+        $.ajax(
+            "/export_all",
+            {}
+        )
+    })
+    $("#eye").on("click", () => {
+        let inp = $("#passwordInput").get(0);
+        if (inp.type === "password") {
+            inp.type = "text";
+        } else {
+            inp.type = "password";
+        }
+    })
+    $("#randPass").on("click", () => {
+        randomPass();
+    })
 })
