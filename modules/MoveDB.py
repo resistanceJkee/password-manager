@@ -87,17 +87,20 @@ def import_all_files():
 
 
 def export_all_files():
-    db_file = os.path.join(os.path.split(os.path.dirname(__file__))[0], f"database{os.sep}database.db")
-    key_file = os.path.join(os.path.split(os.path.dirname(__file__))[0], f"key{os.sep}q.key")
-    root = tk.Tk()
-    root.withdraw()
-    root.attributes("-topmost", True)
-    name_folder = fd.askdirectory()
-    path = os.path.join(name_folder, "password-manager_packages")
-    os.mkdir(path)
     try:
-        shutil.copy(db_file, path)
-        shutil.copy(key_file, path)
+        db_file = os.path.join(os.path.split(os.path.dirname(__file__))[0], f"database{os.sep}database.db")
+        key_file = os.path.join(os.path.split(os.path.dirname(__file__))[0], f"key{os.sep}q.key")
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes("-topmost", True)
+        name_folder = fd.askdirectory()
+        path = os.path.join(name_folder, "password-manager_packages")
+        os.mkdir(path)
+        try:
+            shutil.copy(db_file, path)
+            shutil.copy(key_file, path)
+        except:
+            return "denied"
     except Exception as e:
         return "denied"
     return "success"
