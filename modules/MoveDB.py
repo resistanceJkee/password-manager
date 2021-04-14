@@ -76,7 +76,7 @@ def import_all_files():
     root.attributes("-topmost", True)
     name_folder = fd.askdirectory()
     root.destroy()
-    db = os.path.join(name_folder, "database.db")
+    db = os.path.join(name_folder, "../database/database.db")
     key = os.path.join(name_folder, "q.key")
     try:
         shutil.copy(db, db_target_folder)
